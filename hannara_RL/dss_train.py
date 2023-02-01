@@ -13,8 +13,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
 # 딥살사 인공신경망
-class DeepSARSA(tf.keras.Model):
-    def __init__(self, action_size):
+class DeepSARSA(tf.keras.Model):  # 5
+    def __init__(self, action_size):  # 5
         super(DeepSARSA, self).__init__()
         self.fc1 = Dense(30, activation='relu')
         self.fc2 = Dense(30, activation='relu')
@@ -29,7 +29,7 @@ class DeepSARSA(tf.keras.Model):
 
 # 그리드월드 예제에서의 딥살사 에이전트
 class DeepSARSAgent:
-    def __init__(self, state_size, action_size):
+    def __init__(self, state_size, action_size):  # 12, 5
         # 상태의 크기와 행동의 크기 정의
         self.state_size = state_size
         self.action_size = action_size
@@ -40,7 +40,7 @@ class DeepSARSAgent:
         self.epsilon = 1.
         self.epsilon_decay = .9999
         self.epsilon_min = 0.01
-        self.model = DeepSARSA(self.action_size)
+        self.model = DeepSARSA(self.action_size)  # 출력이 5개를 지정
         self.optimizer = Adam(learning_rate=self.learning_rate)
 
     # 입실론 탐욕 정책으로 행동 선택
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     state_size = 12
     action_space = [0, 1, 2, 3, 4]
     action_size = len(action_space)
-    agent = DeepSARSAgent(state_size, 5)
+    agent = DeepSARSAgent(state_size, 5) #12,
 
     scores, episodes = [], []
 
@@ -96,7 +96,7 @@ if __name__ == "__main__":
 
         while not done:
             # 현재 상태에 대한 행동 선택
-            action = agent.get_action(state)
+            action = agent.get_action(state)  # 5 개
 
             # 선택한 행동으로 환경에서 한 타임스텝 진행 후 샘플 수집
             next_state, reward, done = env.step(action)  # 여기서 state
@@ -104,8 +104,7 @@ if __name__ == "__main__":
             next_action = agent.get_action(next_state)  # ANN을 통한 q함수 출력
 
             # 샘플로 모델 학습
-            agent.train_model(state, action, reward, next_state,
-                              next_action, done)
+            agent.train_model(state, action, reward, next_state, next_action, done)
             score += reward
             state = next_state
 
